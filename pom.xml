@@ -11,6 +11,9 @@
     <modules>
         <module>ChatServer</module>
         <module>UserLogin</module>
+        <module>EurekaServer</module>
+        <module>GateWay</module>
+        <module>ConfigCenter</module>
     </modules>
 
     <!--父工程-->

@@ -1,0 +1,15 @@
+server:
+  port: 9992
+spring:
+  application:
+    name: USER-LOGIN
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://10.16.21.69:3306/websocket?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: root
+  redis:
+    host: 10.16.21.69
+    password: redis
+    port: 6739
+    timeout: 2000s
