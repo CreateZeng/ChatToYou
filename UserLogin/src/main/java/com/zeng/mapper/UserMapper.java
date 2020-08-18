@@ -24,18 +24,22 @@ public interface UserMapper{
     })
 
     /**
-     * @查询用户信息
-     * @Params: [username]
-     * @Return: com.zeng.pojo.po.User
+     * @根据用户名查询用户信息
+     * @Params:
+     * @Return:
      *
     */
-
-    @ResultMap("userMap")
-    @Select("select * from tb_user where username=#{username}")
+    @Select("select * from tb_user where user_name=#{user_name}")
     User selectUser(String username);
 
-    @Insert("Insert into user('username','password') values(#{username},#{password})")
+    /**
+     * @添加用户
+     * @Params:
+     * @Return:
+     *
+    */
+    @ResultMap("userMap")
+    @Insert("insert into tb_user(user_name,password,phone) values(#{username},#{password},#{phone})")
     @Options(useGeneratedKeys = true,keyColumn = "id")
     int insertUser(User user);
-
 }

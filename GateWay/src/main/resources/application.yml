@@ -1,0 +1,6 @@
+
+###自定义配置、白名单
+filter:
+  whitePaths:
+    - /api/user-service
+###Cors跨域访问配置

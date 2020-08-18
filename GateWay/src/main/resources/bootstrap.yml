@@ -1,18 +1,11 @@
+###服务端口号设置
 server:
-  port: 9991
+  port: 10002
+###服务名称设置
 spring:
   application:
-    name: USER-LOGIN
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/websocket?characterEncoding=utf-8
-    username: root
-    password: root
-  redis:
-    host: 10.16.21.69
-    password: redis
-    port: 6739
-    timeout: 2000s
+    name: GATE-WAY
+###eureka相关配置
 eureka:
   client:
     fetch-registry: true
@@ -23,3 +16,8 @@ eureka:
     ip-address: 10.16.21.69
     prefer-ip-address: true
     instance-id: ${eureka.instance.ip-address}:${server.port}
+###Zuul网关配置
+zuul:
+  prefix: /api
+  routes:
+    USER-LOGIN: /user-service/**
