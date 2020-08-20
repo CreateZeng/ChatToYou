@@ -11,5 +11,7 @@ public interface UserService {
 
     User userLogin(String username,String password);
 
-    boolean userRegister(String username,String password);
+    boolean userRegister(User user,String code);
+
+    boolean sendVailCode(String phone);
 }

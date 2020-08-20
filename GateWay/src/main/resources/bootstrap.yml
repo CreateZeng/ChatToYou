@@ -21,3 +21,21 @@ zuul:
   prefix: /api
   routes:
     USER-LOGIN: /user-service/**
+  host:
+    connect-timeout-millis: 15000
+    socket-timeout-millis: 60000
+###Ribbon负载均衡
+ribbon:
+  ConnectTimeout: 500
+  ReadTimeout: 2000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1
+  OkToRetryOnAllOperations: false
+###Hystrix服务熔断
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 6000

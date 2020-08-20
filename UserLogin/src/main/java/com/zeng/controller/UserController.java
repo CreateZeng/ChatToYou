@@ -1,7 +1,9 @@
 package com.zeng.controller;
 
+import com.zeng.pojo.ReturnResult;
 import com.zeng.pojo.po.User;
 import com.zeng.serveice.UserService;
+import com.zeng.utils.RegexConstants;
 import com.zeng.utils.ThreadMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -13,6 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @Author：Zeng-Jin
@@ -38,7 +44,7 @@ public class UserController {
                       @RequestParam(value = "code",required = false)String code,
                       HttpServletResponse response){
         if (password==null){
-
+            User user = userService.userLogin(username, password);
         }else {
 
         }
@@ -51,13 +57,20 @@ public class UserController {
      *
     */
     @PostMapping("user/register")
-    public void register(@Valid User user,BindingResult result,@RequestParam("code")String validCode){
+    public ReturnResult register(@Valid User user,BindingResult result,@RequestParam(value = "code",required = false)String validCode){
+        List<String> errorStr=null;
         if (result.hasErrors()){
+            errorStr=new ArrayList<>();
             for (FieldError fieldError : result.getFieldErrors()) {
-                System.out.println(fieldError);
+                errorStr.add(fieldError.getDefaultMessage());
+            }
+        }else if (user!=null){
+            boolean flag = userService.userRegister(user,validCode);
+            if (flag){
+                return ReturnResult.getSuccess(null);
             }
         }
-
+        return ReturnResult.getFail(errorStr);
     }
 
     /**
@@ -67,13 +80,22 @@ public class UserController {
      *
     */
     @PostMapping("user/code")
-    public void sendCode(@RequestParam("phone") String phone){
-
+    public ReturnResult sendCode(@RequestParam("phone") String phone){
+        Matcher matcher = Pattern.compile(RegexConstants.PHONE_REGEX).matcher(phone);
+        if (matcher.find()) {
+            boolean flag = userService.sendVailCode(phone);
+            if (flag) {
+                return ReturnResult.getSuccess("发送成功");
+            }
+            return ReturnResult.getFail("发送失败");
+        }else {
+            return ReturnResult.getFail("手机号格式不正确");
+        }
     }
 
     @GetMapping("user/verify")
     public void userVerify(){
-
+        System.out.println("用户验证通过......");
     }
 
 }

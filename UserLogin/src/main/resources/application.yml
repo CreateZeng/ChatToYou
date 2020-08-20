@@ -11,7 +11,6 @@ spring:
   redis:
     host: 10.16.21.69
     password: redis
-    port: 6739
     timeout: 2000s
 eureka:
   client:
@@ -23,3 +22,9 @@ eureka:
     ip-address: 10.16.21.69
     prefer-ip-address: true
     instance-id: ${eureka.instance.ip-address}:${server.port}
+msg:
+  sign:
+    signName: 顾以夕沐
+    templateCode: SMS_173345863
+    accessKeyId: LTAIwQUYtEYnhiGz
+    accessKeySecret: 9nD1IVuxjj6TEOzMyd9Sx1QVqNpn9T

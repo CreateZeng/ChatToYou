@@ -11,6 +11,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ChatServerApplication {
     public static void main(String[] args) {
         SpringApplication aplication = new SpringApplication();
-        aplication.run(ChatServerApplication.class,args);
+        SpringApplication.run(ChatServerApplication.class,args);
     }
 }
