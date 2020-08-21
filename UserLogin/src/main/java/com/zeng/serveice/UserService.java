@@ -1,5 +1,6 @@
 package com.zeng.serveice;
 
+import com.zeng.pojo.dto.UserDTO;
 import com.zeng.pojo.po.User;
 
 /**
@@ -9,7 +10,7 @@ import com.zeng.pojo.po.User;
  **/
 public interface UserService {
 
-    User userLogin(String username,String password);
+    UserDTO userLogin(String username, String password, String code);
 
     boolean userRegister(User user,String code);
 

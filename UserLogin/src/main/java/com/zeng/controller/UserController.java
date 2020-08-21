@@ -1,6 +1,7 @@
 package com.zeng.controller;
 
 import com.zeng.pojo.ReturnResult;
+import com.zeng.pojo.dto.UserDTO;
 import com.zeng.pojo.po.User;
 import com.zeng.serveice.UserService;
 import com.zeng.utils.RegexConstants;
@@ -39,14 +40,18 @@ public class UserController {
      *
     */
     @PostMapping("user/login")
-    public void login(String username, @RequestParam(value = "password",required = false) String password,
+    public ReturnResult login(String username, @RequestParam(value = "password",required = false) String password,
                       @RequestParam(value = "phone",required = false)String phone,
                       @RequestParam(value = "code",required = false)String code,
                       HttpServletResponse response){
-        if (password==null){
-            User user = userService.userLogin(username, password);
+        if (username!=null){
+            UserDTO userDTO = userService.userLogin(username, password,code);
+            if (userDTO==null){
+                return ReturnResult.getFail("登陆失败");
+            }
+            return ReturnResult.getSuccess(userDTO);
         }else {
-
+            return ReturnResult.getFail("登陆失败");
         }
     }
 
@@ -57,7 +62,7 @@ public class UserController {
      *
     */
     @PostMapping("user/register")
-    public ReturnResult register(@Valid User user,BindingResult result,@RequestParam(value = "code",required = false)String validCode){
+    public ReturnResult register(@Valid User user,BindingResult result,@RequestParam(value = "code",required = true)String validCode){
         List<String> errorStr=null;
         if (result.hasErrors()){
             errorStr=new ArrayList<>();

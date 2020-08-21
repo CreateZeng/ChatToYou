@@ -1,6 +1,7 @@
 package com.zeng.serveice.impl;
 
 import com.zeng.mapper.UserMapper;
+import com.zeng.pojo.dto.UserDTO;
 import com.zeng.pojo.po.User;
 import com.zeng.serveice.UserService;
 import com.zeng.utils.MsgUtil;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
-    @Autowired
+    @Resource(name = "RedisString")
     private RedisTemplate<String,String> redisTemplate;
     @Autowired
     private MsgUtil msgUtil;
@@ -32,11 +34,22 @@ public class UserServiceImpl implements UserService {
      *
     */
     @Override
-    public User userLogin(String username, String password) {
-
+    public UserDTO userLogin(String username, String password, String code) {
         User user = userMapper.selectUser(username);
-        if (user!=null&&user.getPassword().equals(password)){
-
+        UserDTO userDTO = new UserDTO();
+        if (user!=null){
+            if (user.getPassword().equals(password)){
+                userDTO.setUsername(user.getUsername());
+                userDTO.setPhone(user.getPhone());
+                return userDTO;
+            }else{
+                String codeRedis = redisTemplate.opsForValue().get(user.getPhone());
+                if (code!=null&&code.equals(codeRedis)){
+                    userDTO.setUsername(user.getUsername());
+                    userDTO.setPhone(user.getPhone());
+                    return userDTO;
+                }
+            }
         }
         return null;
     }
@@ -49,12 +62,14 @@ public class UserServiceImpl implements UserService {
     */
     @Override
     public boolean userRegister(User user,String validCode) {
+        //判断用户名是否使用过
+        User selectUser = userMapper.selectUser(user.getUsername());
+        if (selectUser!=null){
+            return false;
+        }
+        //短信验证手机号的正确性
         String code = redisTemplate.opsForValue().get("MsgCode:" + user.getPhone());
         if (code!=null&&code.equals(validCode)){
-            User selectUser = userMapper.selectUser(user.getUsername());
-            if (selectUser!=null){
-                return false;
-            }
             int count = userMapper.insertUser(user);
             return count == 1;
         }
@@ -75,7 +90,7 @@ public class UserServiceImpl implements UserService {
         }
         String str= redisTemplate.opsForValue().get("MsgCode:" + phone);
         if (str==null){
-            redisTemplate.opsForValue().set("MsgCode:"+phone,code ,2 ,TimeUnit.MINUTES );
+            redisTemplate.opsForValue().set("MsgCode:"+phone,code ,5 ,TimeUnit.MINUTES );
         }
         return true;
     }
