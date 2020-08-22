@@ -21,21 +21,21 @@ zuul:
   prefix: /api
   routes:
     USER:
-      serviceId: USER-SERVER
       path: /user-service/**
+      serviceId: USER-SERVER
     CHAT:
-      serviceId: CHAT-SERVER
       path: /chat-service/**
+      serviceId: CHAT-SERVER
   host:
     connect-timeout-millis: 15000
     socket-timeout-millis: 60000
+  retryable: true
 ###Ribbon负载均衡
 ribbon:
-  ConnectTimeout: 500
-  ReadTimeout: 2000
-  MaxAutoRetries: 0
-  MaxAutoRetriesNextServer: 1
-  OkToRetryOnAllOperations: false
+  MaxAutoRetries: 3
+  MaxAutoRetriesNextServer: 0
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
 ###Hystrix服务熔断
 hystrix:
   command:
@@ -43,4 +43,4 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 6000
+            timeoutInMilliseconds: 20000

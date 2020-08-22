@@ -9,3 +9,14 @@ spring:
     timeout: 2000s
 server:
   port: 9996
+#####Eureka配置
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+          defaultZone: http://127.0.0.1:10001/eureka
+  instance:
+    ip-address: 127.0.0.1
+    prefer-ip-address: true
+    instance-id: ${eureka.instance.ip-address}:${server.port}
