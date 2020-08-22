@@ -10,7 +10,9 @@ import com.zeng.pojo.po.User;
  **/
 public interface UserService {
 
-    UserDTO userLogin(String username, String password, String code);
+    UserDTO userLogin(String username, String password);
+
+    UserDTO userLoginByPhone(String phone,String code);
 
     boolean userRegister(User user,String code);
 

@@ -40,19 +40,25 @@ public class UserController {
      *
     */
     @PostMapping("user/login")
-    public ReturnResult login(String username, @RequestParam(value = "password",required = false) String password,
-                      @RequestParam(value = "phone",required = false)String phone,
-                      @RequestParam(value = "code",required = false)String code,
-                      HttpServletResponse response){
+    public ReturnResult login(@RequestParam(value = "username",required = false)String username,
+                              @RequestParam(value = "password",required = false) String password,
+                              @RequestParam(value = "phone",required = false)String phone,
+                              @RequestParam(value = "code",required = false)String code,
+                              HttpServletResponse response){
         if (username!=null){
-            UserDTO userDTO = userService.userLogin(username, password,code);
+            UserDTO userDTO = userService.userLogin(username, password);
             if (userDTO==null){
                 return ReturnResult.getFail("登陆失败");
             }
             return ReturnResult.getSuccess(userDTO);
-        }else {
-            return ReturnResult.getFail("登陆失败");
+        }else if (phone!=null){
+            UserDTO userDTO = userService.userLoginByPhone(phone,code);
+            if (userDTO==null){
+                return ReturnResult.getFail("登陆失败");
+            }
+            return ReturnResult.getSuccess(userDTO);
         }
+        return ReturnResult.getFail("登陆失败");
     }
 
     /**

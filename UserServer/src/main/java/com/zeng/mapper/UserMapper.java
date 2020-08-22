@@ -30,13 +30,20 @@ public interface UserMapper{
      *
     */
     @Select("select * from tb_user where user_name=#{username}")
-    User selectUser(String username);
+    User selectByUsername(String username);
+
+    /**
+     * @根据手机号查询用户信息
+     * @param phone
+     * @return
+     */
+    @Select("select * from tb_user where user_name=#{phone}")
+    User selectByPhone(String phone);
 
     /**
      * @添加用户
      * @Params:
      * @Return:
-     *
     */
     @ResultMap("userMap")
     @Insert("insert into tb_user(user_name,password,phone) values(#{username},#{password},#{phone})")

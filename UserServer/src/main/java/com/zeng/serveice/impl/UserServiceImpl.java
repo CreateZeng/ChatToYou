@@ -34,21 +34,29 @@ public class UserServiceImpl implements UserService {
      *
     */
     @Override
-    public UserDTO userLogin(String username, String password, String code) {
-        User user = userMapper.selectUser(username);
+    public UserDTO userLogin(String username, String password) {
+        User user = userMapper.selectByUsername(username);
         UserDTO userDTO = new UserDTO();
         if (user!=null){
             if (user.getPassword().equals(password)){
                 userDTO.setUsername(user.getUsername());
                 userDTO.setPhone(user.getPhone());
                 return userDTO;
-            }else{
-                String codeRedis = redisTemplate.opsForValue().get(user.getPhone());
-                if (code!=null&&code.equals(codeRedis)){
-                    userDTO.setUsername(user.getUsername());
-                    userDTO.setPhone(user.getPhone());
-                    return userDTO;
-                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public UserDTO userLoginByPhone(String phone,String code) {
+        User user = userMapper.selectByPhone(phone);
+        UserDTO userDTO = new UserDTO();
+        if (user!=null){
+            String codeRedis = redisTemplate.opsForValue().get("MsgCode:" + user.getPhone());
+            if (code!=null&&code.equals(codeRedis)){
+                userDTO.setUsername(user.getUsername());
+                userDTO.setPhone(user.getPhone());
+                return userDTO;
             }
         }
         return null;
@@ -63,7 +71,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean userRegister(User user,String validCode) {
         //判断用户名是否使用过
-        User selectUser = userMapper.selectUser(user.getUsername());
+        User selectUser = userMapper.selectByUsername(user.getUsername());
         if (selectUser!=null){
             return false;
         }
