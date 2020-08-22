@@ -45,5 +45,11 @@
             <version>3.1.0</version>
             <scope>compile</scope>
         </dependency>
+        <!--Eureka-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <version>2.1.0.RELEASE</version>
+        </dependency>
     </dependencies>
 </project>

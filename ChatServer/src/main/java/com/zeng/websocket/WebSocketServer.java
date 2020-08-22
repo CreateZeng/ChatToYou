@@ -48,8 +48,4 @@ public class WebSocketServer {
 
     }
 
-    @OnError
-    public void onError(Session session){
-        System.out.println(session.getId()+"出现error.....");
-    }
 }

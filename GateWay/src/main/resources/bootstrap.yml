@@ -11,26 +11,31 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-          defaultZone: http://10.16.21.69:10001/eureka
+          defaultZone: http://127.0.0.1:10001/eureka
   instance:
-    ip-address: 10.16.21.69
+    ip-address: 127.0.0.1
     prefer-ip-address: true
     instance-id: ${eureka.instance.ip-address}:${server.port}
 ###Zuul网关配置
 zuul:
   prefix: /api
   routes:
-    USER-LOGIN: /user-service/**
+    USER:
+      path: /user-service/**
+      serviceId: USER-SERVER
+    CHAT:
+      path: /chat-service/**
+      serviceId: CHAT-SERVER
   host:
     connect-timeout-millis: 15000
     socket-timeout-millis: 60000
+  retryable: true
 ###Ribbon负载均衡
 ribbon:
-  ConnectTimeout: 500
-  ReadTimeout: 2000
-  MaxAutoRetries: 0
-  MaxAutoRetriesNextServer: 1
-  OkToRetryOnAllOperations: false
+  MaxAutoRetries: 3
+  MaxAutoRetriesNextServer: 0
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
 ###Hystrix服务熔断
 hystrix:
   command:
@@ -38,4 +43,4 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 6000
+            timeoutInMilliseconds: 20000
