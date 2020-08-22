@@ -29,7 +29,7 @@ public interface UserMapper{
      * @Return:
      *
     */
-    @Select("select * from tb_user where user_name=#{user_name}")
+    @Select("select * from tb_user where user_name=#{username}")
     User selectUser(String username);
 
     /**
