@@ -11,16 +11,21 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-          defaultZone: http://10.16.21.69:10001/eureka
+          defaultZone: http://127.0.0.1:10001/eureka
   instance:
-    ip-address: 10.16.21.69
+    ip-address: 127.0.0.1
     prefer-ip-address: true
     instance-id: ${eureka.instance.ip-address}:${server.port}
 ###Zuul网关配置
 zuul:
   prefix: /api
   routes:
-    USER-LOGIN: /user-service/**
+    USER:
+      serviceId: USER-SERVER
+      path: /user-service/**
+    CHAT:
+      serviceId: CHAT-SERVER
+      path: /chat-service/**
   host:
     connect-timeout-millis: 15000
     socket-timeout-millis: 60000

@@ -10,7 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>ChatServer</module>
-        <module>UserLogin</module>
+        <module>UserServer</module>
         <module>EurekaServer</module>
         <module>GateWay</module>
         <module>ConfigCenter</module>
