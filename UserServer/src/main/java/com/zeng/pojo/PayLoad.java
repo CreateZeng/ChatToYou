@@ -1,5 +1,6 @@
 package com.zeng.pojo;
 
+import com.zeng.pojo.dto.UserDTO;
 import lombok.Data;
 
 import java.util.Date;
@@ -11,11 +12,11 @@ import java.util.Date;
  * @JWT的载荷实体类、用于存放用户信息
  **/
 @Data
-public class PayLoad<T> {
+public class PayLoad{
 
     private String id;
 
-    private T userDto;
+    private UserDTO userDto;
 
     private Date expiration;
 }

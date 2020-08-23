@@ -4,12 +4,18 @@ import com.zeng.mapper.UserMapper;
 import com.zeng.pojo.dto.UserDTO;
 import com.zeng.pojo.po.User;
 import com.zeng.serveice.UserService;
+import com.zeng.utils.CookieUtils;
+import com.zeng.utils.JWTUtil;
 import com.zeng.utils.MsgUtil;
+import com.zeng.utils.RSAUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -17,6 +23,7 @@ import java.util.concurrent.TimeUnit;
  * @Motto：不积跬步、无以至千里。
  * @Date：2020-08-17
  **/
+@SuppressWarnings("all")
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -34,21 +41,29 @@ public class UserServiceImpl implements UserService {
      *
     */
     @Override
-    public UserDTO userLogin(String username, String password) {
+    public String userLogin(String username, String password,HttpServletResponse response) {
         User user = userMapper.selectByUsername(username);
         UserDTO userDTO = new UserDTO();
         if (user!=null){
             if (user.getPassword().equals(password)){
                 userDTO.setUsername(user.getUsername());
                 userDTO.setPhone(user.getPhone());
-                return userDTO;
+                //生成token
+                String token =null;
+                try {
+                    token=JWTUtil.generateTokenExpireMinutes(userDTO, 15, RSAUtil.acquirePrivate(RSAUtil.path + "\\private.txt"));
+                    System.out.println(token);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return token;
             }
         }
         return null;
     }
 
     @Override
-    public UserDTO userLoginByPhone(String phone,String code) {
+    public String userLoginByPhone(String phone,String code,HttpServletResponse response) {
         User user = userMapper.selectByPhone(phone);
         UserDTO userDTO = new UserDTO();
         if (user!=null){
@@ -56,7 +71,15 @@ public class UserServiceImpl implements UserService {
             if (code!=null&&code.equals(codeRedis)){
                 userDTO.setUsername(user.getUsername());
                 userDTO.setPhone(user.getPhone());
-                return userDTO;
+                //生成token
+                String token =null;
+                try {
+                    token=JWTUtil.generateTokenExpireMinutes(userDTO, 15, RSAUtil.acquirePrivate(RSAUtil.path + "\\private.txt"));
+                    System.out.println(token);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return token;
             }
         }
         return null;

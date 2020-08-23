@@ -37,7 +37,8 @@ public interface UserMapper{
      * @param phone
      * @return
      */
-    @Select("select * from tb_user where user_name=#{phone}")
+    @ResultMap("userMap")
+    @Select("select * from tb_user where phone=#{phone}")
     User selectByPhone(String phone);
 
     /**

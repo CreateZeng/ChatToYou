@@ -18,7 +18,7 @@ public class RSAUtil {
     private static final int DEFAULT_KEY_SIZE = 2048;
 
     //保存文件夹路径
-    private static final String path="C:\\Users\\hhh\\Desktop\\test";
+    public static final String path="C:\\Users\\lenovo\\Desktop\\test";
 
     /**
      * @使用KeyPairGenerator生成RSA加密的私钥和公钥
@@ -81,5 +81,9 @@ public class RSAUtil {
         //生成PublicKey、并返回
         KeyFactory factory = KeyFactory.getInstance("RSA");
         return factory.generatePublic(spec);
+    }
+
+    public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
+        generateKey("hello",1024);
     }
 }

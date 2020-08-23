@@ -21,7 +21,7 @@ public class JWTUtil {
 
     private static final String JWT_PAYLOAD_USER_KEY = "user";   //载荷名称
 
-    public String generateTokenExpireMinutes(UserDTO userDTO,int expire,PrivateKey privateKey){
+    public static String generateTokenExpireMinutes(UserDTO userDTO,int expire,PrivateKey privateKey){
         String userInfo = JSON.toJSONString(userDTO);
         //生成JWTToken、并返回
         return Jwts.builder()
@@ -32,16 +32,18 @@ public class JWTUtil {
                 .compact();
     }
 
-    private String CreateJwtId(){
+    private static String CreateJwtId(){
         return new String(Base64.getEncoder().encode(UUID.randomUUID().toString().getBytes()));
     }
 
-    public static <T> PayLoad<T> analysisJWTToken(String token, PublicKey publicKey, Class<T> userType){
+    public static PayLoad analysisJWTToken(String token, PublicKey publicKey){
         //获取载荷信息
         Jws<Claims> claimsJws = Jwts.parser().setSigningKey(publicKey).parseClaimsJws(token);
         Claims claims = claimsJws.getBody();
         //组装成Payload返回
-        PayLoad<T> userDTOPayLoad= new PayLoad<T>();
+        PayLoad userDTOPayLoad= new PayLoad();
+        userDTOPayLoad.setId(claims.getId());
+        userDTOPayLoad.setUserDto((UserDTO)claims.get(JWT_PAYLOAD_USER_KEY));
         return userDTOPayLoad;
     }
 }

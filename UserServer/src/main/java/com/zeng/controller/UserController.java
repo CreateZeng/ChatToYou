@@ -1,9 +1,12 @@
 package com.zeng.controller;
 
+import com.zeng.pojo.PayLoad;
 import com.zeng.pojo.ReturnResult;
 import com.zeng.pojo.dto.UserDTO;
 import com.zeng.pojo.po.User;
 import com.zeng.serveice.UserService;
+import com.zeng.utils.JWTUtil;
+import com.zeng.utils.RSAUtil;
 import com.zeng.utils.RegexConstants;
 import com.zeng.utils.ThreadMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -39,24 +44,33 @@ public class UserController {
      * @Return:
      *
     */
-    @PostMapping("user/login")
+    @GetMapping("user/login")
     public ReturnResult login(@RequestParam(value = "username",required = false)String username,
                               @RequestParam(value = "password",required = false) String password,
                               @RequestParam(value = "phone",required = false)String phone,
                               @RequestParam(value = "code",required = false)String code,
                               HttpServletResponse response){
+
         if (username!=null){
-            UserDTO userDTO = userService.userLogin(username, password);
-            if (userDTO==null){
+            String token = userService.userLogin(username, password, response);
+            if (token==null){
                 return ReturnResult.getFail("登陆失败");
             }
-            return ReturnResult.getSuccess(userDTO);
+            Cookie cookie = new Cookie("token", token);
+            cookie.setHttpOnly(true);
+            cookie.setDomain("localhost:10002");
+            response.addCookie(cookie);
+            return ReturnResult.getSuccess(token);
         }else if (phone!=null){
-            UserDTO userDTO = userService.userLoginByPhone(phone,code);
-            if (userDTO==null){
+            String token = userService.userLoginByPhone(phone, code, response);
+            if (token==null){
                 return ReturnResult.getFail("登陆失败");
             }
-            return ReturnResult.getSuccess(userDTO);
+            Cookie cookie = new Cookie("token", token);
+            cookie.setHttpOnly(true);
+            cookie.setDomain("localhost:10002");
+            response.addCookie(cookie);
+            return ReturnResult.getSuccess(token);
         }
         return ReturnResult.getFail("登陆失败");
     }
@@ -105,8 +119,20 @@ public class UserController {
     }
 
     @GetMapping("user/verify")
-    public void userVerify(){
-        System.out.println("用户验证通过......");
+    public ReturnResult userVerify(HttpServletRequest request,HttpServletResponse response){
+        Cookie[] requestCookies = request.getCookies();
+        if (requestCookies!=null){
+            for (Cookie requestCookie : requestCookies) {
+                String token = requestCookie.getValue();
+                try {
+                    PayLoad userDTOPayLoad = JWTUtil.analysisJWTToken(token, RSAUtil.acquirePublic(RSAUtil.path + "\\public.txt"));
+                    UserDTO userDto = userDTOPayLoad.getUserDto();
+                    return ReturnResult.getSuccess(userDto);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return ReturnResult.getFail(null);
     }
-
 }

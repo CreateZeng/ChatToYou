@@ -3,6 +3,8 @@ package com.zeng.serveice;
 import com.zeng.pojo.dto.UserDTO;
 import com.zeng.pojo.po.User;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @Author：Zeng-Jin
  * @Motto：不积跬步、无以至千里。
@@ -10,9 +12,9 @@ import com.zeng.pojo.po.User;
  **/
 public interface UserService {
 
-    UserDTO userLogin(String username, String password);
+    String userLogin(String username, String password,HttpServletResponse response);
 
-    UserDTO userLoginByPhone(String phone,String code);
+    String userLoginByPhone(String phone,String code,HttpServletResponse response);
 
     boolean userRegister(User user,String code);
 
