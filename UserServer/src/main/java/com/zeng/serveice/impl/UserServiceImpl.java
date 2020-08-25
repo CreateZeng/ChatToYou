@@ -8,6 +8,8 @@ import com.zeng.utils.CookieUtils;
 import com.zeng.utils.JWTUtil;
 import com.zeng.utils.MsgUtil;
 import com.zeng.utils.RSAUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private Logger logger= LoggerFactory.getLogger(this.getClass());
     @Autowired
     private UserMapper userMapper;
     @Resource(name = "RedisString")
@@ -62,6 +65,12 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    /**
+     * @手机号登陆
+     * @Params:
+     * @Return:
+     *
+    */
     @Override
     public String userLoginByPhone(String phone,String code,HttpServletResponse response) {
         User user = userMapper.selectByPhone(phone);

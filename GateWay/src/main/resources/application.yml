@@ -4,3 +4,19 @@ filter:
   whitePaths:
     - /api/user-service
 ###Cors跨域访问配置
+cors:
+  allowedOrigins:
+    -www.websocket.com
+    -api.websocket.com
+  allowedCredentials: true
+  allowedHeaders:
+    - "*"
+  allowedMethods:
+    - GET
+    - POST
+    - DELETE
+    - PUT
+    - OPTIONS
+    - HEAD
+  maxAge: 360000
+  filterPath: "/**"

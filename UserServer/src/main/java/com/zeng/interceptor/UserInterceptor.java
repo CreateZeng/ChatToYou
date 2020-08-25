@@ -16,8 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 public class UserInterceptor implements HandlerInterceptor{
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        ThreadMap.setUserId(request.getParameter("name"));
-        System.out.println("拦截器获取用户名:"+request.getParameter("username"));
+        ThreadMap.setUserId(request.getParameter("username"));
         return true;
     }
 }

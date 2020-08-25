@@ -8,7 +8,8 @@ import com.zeng.serveice.UserService;
 import com.zeng.utils.JWTUtil;
 import com.zeng.utils.RSAUtil;
 import com.zeng.utils.RegexConstants;
-import com.zeng.utils.ThreadMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -34,7 +35,7 @@ import java.util.regex.Pattern;
 @RestController
 public class UserController {
 
-
+    private Logger logger= LoggerFactory.getLogger(this.getClass());
     @Autowired
     private UserService userService;
 
@@ -44,34 +45,40 @@ public class UserController {
      * @Return:
      *
     */
-    @GetMapping("user/login")
+    @PostMapping("user/login")
     public ReturnResult login(@RequestParam(value = "username",required = false)String username,
                               @RequestParam(value = "password",required = false) String password,
                               @RequestParam(value = "phone",required = false)String phone,
                               @RequestParam(value = "code",required = false)String code,
                               HttpServletResponse response){
-
+        logger.info(username+"正在登陆......");
         if (username!=null){
             String token = userService.userLogin(username, password, response);
             if (token==null){
                 return ReturnResult.getFail("登陆失败");
             }
-            Cookie cookie = new Cookie("token", token);
-            cookie.setHttpOnly(true);
-            cookie.setDomain("localhost:10002");
-            response.addCookie(cookie);
+            //添加Cookie
+            Cookie cookie = new Cookie("WEBSOCKET-TOKEN", token);
+            cookie.setHttpOnly(true);                   //客户端只读模式
+            cookie.setDomain("api.websocket.com");      //域名
+            response.addCookie(cookie);                 //添加Cookie
+            logger.info(username+"登陆成功......");
             return ReturnResult.getSuccess(token);
         }else if (phone!=null){
             String token = userService.userLoginByPhone(phone, code, response);
             if (token==null){
+                logger.info("登陆失败......");
                 return ReturnResult.getFail("登陆失败");
             }
-            Cookie cookie = new Cookie("token", token);
-            cookie.setHttpOnly(true);
-            cookie.setDomain("localhost:10002");
-            response.addCookie(cookie);
+            //添加Cookie
+            Cookie cookie = new Cookie("WEBSOCKET-TOKEN", token);
+            cookie.setHttpOnly(true);                   //客户端只读模式
+            cookie.setDomain("api.websocket.com");      //域名
+            response.addCookie(cookie);                 //添加Cookie
+            logger.info("登陆成功......");
             return ReturnResult.getSuccess(token);
         }
+        logger.info("登陆失败......");
         return ReturnResult.getFail("登陆失败");
     }
 

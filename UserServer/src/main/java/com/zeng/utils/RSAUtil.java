@@ -1,6 +1,8 @@
 package com.zeng.utils;
+import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -18,7 +20,38 @@ public class RSAUtil {
     private static final int DEFAULT_KEY_SIZE = 2048;
 
     //保存文件夹路径
-    public static final String path="C:\\Users\\lenovo\\Desktop\\test";
+    public static final String path=FileSystemView.getFileSystemView().getHomeDirectory().toString()+File.separator+"key";
+
+    static {
+        File keyPath = new File(path);
+        boolean flag=true;
+        if (!keyPath.exists()){
+            flag= keyPath.mkdir();
+        }
+        if (flag){
+            File[] files = keyPath.listFiles();
+            if (files!=null){
+                boolean hasPrivate=false;
+                boolean hasPublic=false;
+                for (File file : files) {
+                    if (file.getName().equals("private")) {
+                        hasPrivate =true;
+                    }
+                    if (file.getName().equals("public")){
+                        hasPublic=true;
+                    }
+
+                }
+                if (!hasPrivate||!hasPublic){
+                    try {
+                        RSAUtil.generateKey("hello", 1024);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * @使用KeyPairGenerator生成RSA加密的私钥和公钥
@@ -84,6 +117,9 @@ public class RSAUtil {
     }
 
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
-        generateKey("hello",1024);
+       // generateKey("hello",1024);
+        FileSystemView systemView = FileSystemView.getFileSystemView();
+        String deskTopStr = systemView.getHomeDirectory().toString();
+        System.out.println(systemView.getHomeDirectory().toString());
     }
 }

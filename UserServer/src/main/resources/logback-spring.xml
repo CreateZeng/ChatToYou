@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+    <!--定义参数-->
+    <property name="springAppName" value="User-Server"/>
+
+    <!-- 控制台的日志输出样式 -->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%highlight(%d{yyyy-MM-dd HH:mm:ss:sss} %-5level) %-10green([${springAppName},%thread]) %boldMagenta(%logger{36}:%line) - %cyan(%msg%n)"/>
+    <property name="FILE_LOG_PATTERN"
+              value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5}:%line --- %msg%n"/>
+    <!--文件输出位置-->  <!--/保存到系统目录   没有/保存到项目   （不带盘符）-->
+    <property name="LOG_PATH" value="/Users/hhh/Desktop/test"/>
+
+    <!-- 控制台输出 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <!-- 日志输出编码 -->
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <!--输出到文件按日期分割-->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}\${springAppName}.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--指定最基础的日志输出级别-->
+    <root level="INFO">
+        <!--appender将会添加到这个logger-->
+        <appender-ref ref="console"/>
+        <appender-ref ref="file"/>
+    </root>
+
+</configuration>

@@ -28,7 +28,6 @@ public class PreRequestFilter extends ZuulFilter{
      * @过滤器类型  pre前置 routing路由 post后置  error错误过滤器
      * @Params:
      * @Return:
-     *
     */
     @Override
     public String filterType() {
@@ -39,7 +38,6 @@ public class PreRequestFilter extends ZuulFilter{
      * @执行顺序
      * @Params:
      * @Return:
-     *
     */
     @Override
     public int filterOrder() {
@@ -50,7 +48,6 @@ public class PreRequestFilter extends ZuulFilter{
      * @过滤器开关--true过滤---false不过滤、此处可以进行一些鉴权行为
      * @Params:
      * @Return:
-     *
     */
     @Override
     public boolean shouldFilter() {
@@ -72,14 +69,12 @@ public class PreRequestFilter extends ZuulFilter{
      * @自定义执行方法
      * @Params:
      * @Return:
-     *
     */
     @Override
     public Object run() throws ZuulException {
         System.out.println("进行登录验证.......");
         //获取当前请求上下文
         RequestContext requestContext = RequestContext.getCurrentContext();
-
         return null;
     }
 }

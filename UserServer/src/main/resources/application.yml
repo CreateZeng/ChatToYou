@@ -28,3 +28,17 @@ msg:
     templateCode: SMS_173345863
     accessKeyId: LTAIwQUYtEYnhiGz
     accessKeySecret: 9nD1IVuxjj6TEOzMyd9Sx1QVqNpn9T
+###开启日志配置(使用默认配置文件、进行配置)
+#logging:
+#  pattern:
+#    console: "%d - %msg%n"
+#    file: "%d - %msg%n"
+#  ###按路径保存
+##  path: C:\Users\hhh\Desktop\test\
+#  ##按文件名保存
+#  file: C:\Users\hhh\Desktop\test\springBoot.log
+#  level: debug
+####文件输出
+###自定义日志文件（配置文件名字自定义的、需要配置该路径）
+logging:
+  config: classpath:logback-spring.xml
