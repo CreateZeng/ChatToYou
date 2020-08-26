@@ -10,7 +10,7 @@
     <property name="FILE_LOG_PATTERN"
               value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5}:%line --- %msg%n"/>
     <!--文件输出位置-->  <!--/保存到系统目录   没有/保存到项目   （不带盘符）-->
-    <property name="LOG_PATH" value="/Users/hhh/Desktop/test"/>
+    <property name="LOG_PATH" value="logs/userserverlog"/>
 
     <!-- 控制台输出 -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">

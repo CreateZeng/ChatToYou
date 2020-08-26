@@ -1,8 +1,7 @@
 package com.zeng.mapper;
 
-import com.zeng.pojo.po.User;
+import com.zeng.entry.po.User;
 import org.apache.ibatis.annotations.*;
-import org.springframework.data.annotation.Id;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,26 +14,21 @@ import org.springframework.stereotype.Repository;
 public interface UserMapper{
 
     /**
-     * @映射关系
-    */
+     * @根据用户名查询用户信息
+     * @Params:
+     * @Return:
+     */
     @Results(id = "userMap",value = {
             @Result(property = "id",column = "id"),
             @Result(property = "username",column = "user_name"),
             @Result(property = "password",column = "password")
     })
-
-    /**
-     * @根据用户名查询用户信息
-     * @Params:
-     * @Return:
-     *
-    */
     @Select("select * from tb_user where user_name=#{username}")
     User selectByUsername(String username);
 
     /**
      * @根据手机号查询用户信息
-     * @param phone
+     * @param
      * @return
      */
     @ResultMap("userMap")

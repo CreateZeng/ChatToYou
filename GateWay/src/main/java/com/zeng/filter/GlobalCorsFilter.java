@@ -1,6 +1,6 @@
 package com.zeng.filter;
 
-import com.zeng.propertyEntry.CorsProperties;
+import com.zeng.entry.CorsProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -15,9 +15,9 @@ import org.springframework.web.filter.CorsFilter;
  * @Date：2020-08-25
  **/
 @Configuration
-public class GlobalCorsConfiguration {
+public class GlobalCorsFilter {
 
-    private static Logger logger= LoggerFactory.getLogger(GlobalCorsConfiguration.class);
+    private static Logger logger= LoggerFactory.getLogger(GlobalCorsFilter.class);
 
     /**
      * @Cors跨域访问配置
@@ -26,7 +26,7 @@ public class GlobalCorsConfiguration {
     */
     @Bean
     public CorsFilter corsFilter(CorsProperties corsProperties){
-        logger.info("into corsFilter().........");
+        logger.info("进行Cors跨域设置.........");
         //添加cors配置
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         //添加源origin
@@ -48,7 +48,7 @@ public class GlobalCorsConfiguration {
         //添加映射路径
         UrlBasedCorsConfigurationSource configSource = new UrlBasedCorsConfigurationSource();
         configSource.registerCorsConfiguration(corsProperties.getFilterPath(), corsConfiguration);
-        logger.info("out of corsFilter().......");
+        logger.info("Cors跨域设置完毕.........");
         //装配配置
         return new CorsFilter(configSource);
     }

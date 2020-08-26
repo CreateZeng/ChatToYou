@@ -1,6 +1,6 @@
-package com.zeng.pojo;
+package com.zeng.entry.vo;
 
-import com.zeng.pojo.dto.UserDTO;
+import com.zeng.entry.dto.UserDTO;
 import lombok.Data;
 
 import java.util.Date;

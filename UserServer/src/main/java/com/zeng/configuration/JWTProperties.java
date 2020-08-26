@@ -1,23 +1,22 @@
-package com.zeng.propertyEntry;
+package com.zeng.configuration;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 /**
- * @B白名单
  * @Author：Zeng-Jin
  * @Motto：不积跬步、无以至千里。
- * @Date：2020-08-18
+ * @Date：2020-08-26
  **/
-@Data
 @Component
+@Data
 @PropertySource(value = "classpath:application.yml")
-@ConfigurationProperties(prefix = "filter")
-public class WhitePathProperties {
+@ConfigurationProperties(prefix = "jwt.info")
+public class JWTProperties {
 
-    private List<String> whitePaths;
+    private int expire;
+    private int surplus;
 }

@@ -1,16 +1,13 @@
 package com.zeng.controller;
 
-import com.zeng.pojo.PayLoad;
-import com.zeng.pojo.ReturnResult;
-import com.zeng.pojo.dto.UserDTO;
-import com.zeng.pojo.po.User;
+import com.zeng.entry.vo.ReturnResult;
+import com.zeng.entry.dto.UserDTO;
+import com.zeng.entry.po.User;
 import com.zeng.serveice.UserService;
-import com.zeng.utils.JWTUtil;
-import com.zeng.utils.RSAUtil;
-import com.zeng.utils.RegexConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.zeng.utils.CookieUtil;
+import com.zeng.utils.RegexUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -35,7 +31,6 @@ import java.util.regex.Pattern;
 @RestController
 public class UserController {
 
-    private Logger logger= LoggerFactory.getLogger(this.getClass());
     @Autowired
     private UserService userService;
 
@@ -43,103 +38,81 @@ public class UserController {
      * @用户登录
      * @Params:
      * @Return:
-     *
     */
     @PostMapping("user/login")
-    public ReturnResult login(@RequestParam(value = "username",required = false)String username,
-                              @RequestParam(value = "password",required = false) String password,
-                              @RequestParam(value = "phone",required = false)String phone,
-                              @RequestParam(value = "code",required = false)String code,
-                              HttpServletResponse response){
-        logger.info(username+"正在登陆......");
+    public ResponseEntity<ReturnResult> login(@RequestParam(value = "username",required = false)String username,
+                                @RequestParam(value = "password",required = false) String password,
+                                @RequestParam(value = "phone",required = false)String phone,
+                                @RequestParam(value = "code",required = false)String code,
+                                HttpServletResponse response){
+        String token=null;
         if (username!=null){
-            String token = userService.userLogin(username, password, response);
+            token = userService.userLoginByPassword(username,password);
             if (token==null){
-                return ReturnResult.getFail("登陆失败");
+                return ResponseEntity.ok(ReturnResult.getFail("登陆失败"));
             }
-            //添加Cookie
-            Cookie cookie = new Cookie("WEBSOCKET-TOKEN", token);
-            cookie.setHttpOnly(true);                   //客户端只读模式
-            cookie.setDomain("api.websocket.com");      //域名
-            response.addCookie(cookie);                 //添加Cookie
-            logger.info(username+"登陆成功......");
-            return ReturnResult.getSuccess(token);
         }else if (phone!=null){
-            String token = userService.userLoginByPhone(phone, code, response);
+            token = userService.userLoginByPhone(phone,code);
             if (token==null){
-                logger.info("登陆失败......");
-                return ReturnResult.getFail("登陆失败");
+                return ResponseEntity.ok(ReturnResult.getFail("登陆失败"));
             }
-            //添加Cookie
-            Cookie cookie = new Cookie("WEBSOCKET-TOKEN", token);
-            cookie.setHttpOnly(true);                   //客户端只读模式
-            cookie.setDomain("api.websocket.com");      //域名
-            response.addCookie(cookie);                 //添加Cookie
-            logger.info("登陆成功......");
-            return ReturnResult.getSuccess(token);
+        }else {
+            return ResponseEntity.ok(ReturnResult.getFail("登陆失败"));
         }
-        logger.info("登陆失败......");
-        return ReturnResult.getFail("登陆失败");
+        //把token写入respone的Cookie中
+        CookieUtil.CookieBuilder cookieBuilder = CookieUtil.createCookieBuilder("WS-TOKEN", token);
+        cookieBuilder.domian("api.websocket.com").httpOnly(true).path("/").response(response).build();
+        return ResponseEntity.ok(ReturnResult.getSuccess(token));
     }
 
     /**
      * @用户注册
      * @Params:
      * @Return:
-     *
     */
     @PostMapping("user/register")
-    public ReturnResult register(@Valid User user,BindingResult result,@RequestParam(value = "code",required = true)String validCode){
-        List<String> errorStr=null;
+    public ResponseEntity<ReturnResult> register(@Valid User user,BindingResult result,@RequestParam(value = "code",required = true)String validCode){
+        //后端检验格式
+        List<String> errorStr=new ArrayList<>();
         if (result.hasErrors()){
-            errorStr=new ArrayList<>();
             for (FieldError fieldError : result.getFieldErrors()) {
                 errorStr.add(fieldError.getDefaultMessage());
             }
         }else if (user!=null){
             boolean flag = userService.userRegister(user,validCode);
             if (flag){
-                return ReturnResult.getSuccess(null);
+                return ResponseEntity.ok(ReturnResult.getSuccess("注册成功"));
             }
         }
-        return ReturnResult.getFail(errorStr);
+        return ResponseEntity.ok(ReturnResult.getFail(errorStr));
     }
 
     /**
      * @短信验证
      * @Params:
      * @Return:
-     *
     */
     @PostMapping("user/code")
-    public ReturnResult sendCode(@RequestParam("phone") String phone){
-        Matcher matcher = Pattern.compile(RegexConstants.PHONE_REGEX).matcher(phone);
+    public ResponseEntity<ReturnResult> sendCode(@RequestParam("phone") String phone){
+        //正则表达式验证手机号格式
+        Matcher matcher = Pattern.compile(RegexUtil.PHONE_REGEX).matcher(phone);
         if (matcher.find()) {
             boolean flag = userService.sendVailCode(phone);
             if (flag) {
-                return ReturnResult.getSuccess("发送成功");
+                return ResponseEntity.ok(ReturnResult.getSuccess("发送成功"));
             }
-            return ReturnResult.getFail("发送失败");
+            return ResponseEntity.ok(ReturnResult.getFail("发送失败"));
         }else {
-            return ReturnResult.getFail("手机号格式不正确");
+            return ResponseEntity.ok(ReturnResult.getFail("手机号格式不正确"));
         }
     }
 
     @GetMapping("user/verify")
-    public ReturnResult userVerify(HttpServletRequest request,HttpServletResponse response){
-        Cookie[] requestCookies = request.getCookies();
-        if (requestCookies!=null){
-            for (Cookie requestCookie : requestCookies) {
-                String token = requestCookie.getValue();
-                try {
-                    PayLoad userDTOPayLoad = JWTUtil.analysisJWTToken(token, RSAUtil.acquirePublic(RSAUtil.path + "\\public.txt"));
-                    UserDTO userDto = userDTOPayLoad.getUserDto();
-                    return ReturnResult.getSuccess(userDto);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+    public ResponseEntity<ReturnResult> userVerify(HttpServletRequest request,HttpServletResponse response){
+        UserDTO userDTO = userService.userVerufy(request, response);
+        if (userDTO!=null){
+            return ResponseEntity.ok(ReturnResult.getSuccess(userDTO));
         }
-        return ReturnResult.getFail(null);
+        return ResponseEntity.ok(ReturnResult.getFail("认证失败"));
     }
 }

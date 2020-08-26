@@ -30,6 +30,8 @@ zuul:
     connect-timeout-millis: 15000
     socket-timeout-millis: 60000
   retryable: true
+###zuul默认会过滤cookie敏感信息头、需要添加该节点才能设置cookie
+  sensitive-headers:
 ###Ribbon负载均衡
 ribbon:
   MaxAutoRetries: 3

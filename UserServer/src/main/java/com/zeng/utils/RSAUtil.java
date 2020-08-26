@@ -19,9 +19,14 @@ public class RSAUtil {
     //默认大小
     private static final int DEFAULT_KEY_SIZE = 2048;
 
-    //保存文件夹路径
-    public static final String path=FileSystemView.getFileSystemView().getHomeDirectory().toString()+File.separator+"key";
+    //保存文件夹路径(项目根路径)
+    public static final String path=System.getProperty("user.dir")+File.separator+"key";
 
+    /**
+     * @静态代码块生成秘钥
+     * @Params:
+     * @Return:
+    */
     static {
         File keyPath = new File(path);
         boolean flag=true;
@@ -57,7 +62,6 @@ public class RSAUtil {
      * @使用KeyPairGenerator生成RSA加密的私钥和公钥
      * @Params:
      * @Return:
-     *
     */
     public static void generateKey(String secret,int keySize) throws NoSuchAlgorithmException, IOException {
         //实例化一个秘钥生成器KeyPairGenerator
@@ -84,7 +88,6 @@ public class RSAUtil {
      * @将加密后的字符私钥还原成PrivateKey
      * @Params:
      * @Return:
-     *
     */
     public static PrivateKey acquirePrivate(String path) throws Exception{
         //读取路径下的私钥.txt
@@ -102,7 +105,6 @@ public class RSAUtil {
      * @将加密后的字符公钥还原成PublicKey
      * @Params:
      * @Return:
-     *
     */
     public static PublicKey acquirePublic(String path) throws Exception {
         //读取路径下的私钥.txt
@@ -117,7 +119,7 @@ public class RSAUtil {
     }
 
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
-       // generateKey("hello",1024);
+        generateKey("hello",1024);
         FileSystemView systemView = FileSystemView.getFileSystemView();
         String deskTopStr = systemView.getHomeDirectory().toString();
         System.out.println(systemView.getHomeDirectory().toString());

@@ -1,9 +1,6 @@
 package com.zeng.websocket;
 
-import com.alibaba.fastjson.JSONObject;
 import com.zeng.config.HttpSessionConfigurator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpSession;

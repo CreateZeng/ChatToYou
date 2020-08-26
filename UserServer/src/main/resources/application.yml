@@ -42,3 +42,7 @@ msg:
 ###自定义日志文件（配置文件名字自定义的、需要配置该路径）
 logging:
   config: classpath:logback-spring.xml
+jwt:
+  info:
+    expire: 30
+    surplus: 10

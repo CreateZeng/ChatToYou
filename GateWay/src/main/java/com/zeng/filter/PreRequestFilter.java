@@ -3,7 +3,7 @@ package com.zeng.filter;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
-import com.zeng.propertyEntry.WhitePathProperties;
+import com.zeng.entry.WhitePathProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +54,7 @@ public class PreRequestFilter extends ZuulFilter{
     */
     @Override
     public boolean shouldFilter() {
-        logger.info("into PreRequestFilter.shouldFilter()......");
+        logger.info("Zuul网关对请求访问鉴权.......");
         //静态方法获取RequestContext、拿到请求上下文后得到请求（zuul中操作数据的对象）
         RequestContext requestContext =RequestContext.getCurrentContext();
         HttpServletRequest request = requestContext.getRequest();
@@ -63,11 +63,11 @@ public class PreRequestFilter extends ZuulFilter{
         for (String path : whitePaths) {
             String requestURI = request.getRequestURI();
             if (requestURI.startsWith(path)){
-                logger.info("Present path is in whitepaths,shouldn't filter......,path is --"+requestURI);
+                logger.info("当前请求在白名单之内、请求路径为---"+requestURI);
                 return false;
             }
         }
-        logger.info("out of PreRequestFilter.shouldFilter()......,next excute run().....,path is --"+request.getRequestURI());
+        logger.info("结束了Zuul网关访问权限鉴权.........");
         return true;
     }
 
@@ -78,10 +78,10 @@ public class PreRequestFilter extends ZuulFilter{
     */
     @Override
     public Object run() throws ZuulException {
-        logger.info("excute run()...,and filter user information.....");
+        logger.info("执行网关过滤方法..........");
         //获取当前请求上下文RequestContext(zuulFilter中操作请求的门户)
         RequestContext requestContext = RequestContext.getCurrentContext();
-        logger.info("out of run().......");
+        logger.info("网关过滤方法执行完毕.......");
         return null;
     }
 }

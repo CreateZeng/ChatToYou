@@ -1,4 +1,4 @@
-package com.zeng.pojo;
+package com.zeng.entry;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

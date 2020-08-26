@@ -1,4 +1,4 @@
-package com.zeng.config;
+package com.zeng.configuration;
 
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;

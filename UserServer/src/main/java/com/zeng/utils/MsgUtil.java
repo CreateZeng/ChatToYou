@@ -8,13 +8,10 @@ import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
-import com.zeng.config.MsgProperties;
+import com.zeng.configuration.MsgProperties;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.validation.Valid;
-import java.util.Random;
 
 /**
  * @Author：Zeng-Jin
@@ -27,7 +24,11 @@ public class MsgUtil {
     @Autowired
     private MsgProperties msgProperties;    //请求参数属性类
 
-
+    /**
+     * @发送短信验证码
+     * @Params:
+     * @Return:
+    */
     public String sendCode(String phone){
         //配置IAcsClient的属性
         DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", msgProperties.getAccessKeyId(), msgProperties.getAccessKeySecret());

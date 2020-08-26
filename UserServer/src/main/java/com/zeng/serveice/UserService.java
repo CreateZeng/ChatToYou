@@ -1,8 +1,9 @@
 package com.zeng.serveice;
 
-import com.zeng.pojo.dto.UserDTO;
-import com.zeng.pojo.po.User;
+import com.zeng.entry.dto.UserDTO;
+import com.zeng.entry.po.User;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -12,11 +13,13 @@ import javax.servlet.http.HttpServletResponse;
  **/
 public interface UserService {
 
-    String userLogin(String username, String password,HttpServletResponse response);
+    String userLoginByPassword(String username, String password);
 
-    String userLoginByPhone(String phone,String code,HttpServletResponse response);
+    String userLoginByPhone(String phone,String code);
 
     boolean userRegister(User user,String code);
 
     boolean sendVailCode(String phone);
+
+    UserDTO userVerufy(HttpServletRequest request, HttpServletResponse response);
 }

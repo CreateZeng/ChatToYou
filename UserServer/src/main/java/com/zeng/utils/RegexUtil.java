@@ -8,7 +8,7 @@ import org.apache.commons.lang.StringUtils;
  * @Motto：不积跬步、无以至千里。
  * @Date：2020-08-18
  **/
-public class RegexConstants {
+public class RegexUtil {
     /**
      * 手机号正则
      */

@@ -1,4 +1,4 @@
-package com.zeng.pojo.dto;
+package com.zeng.entry.dto;
 
 import lombok.Data;
 

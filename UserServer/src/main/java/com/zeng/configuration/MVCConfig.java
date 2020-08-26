@@ -1,4 +1,4 @@
-package com.zeng.config;
+package com.zeng.configuration;
 
 import com.zeng.interceptor.UserInterceptor;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +18,6 @@ public class MVCConfig implements WebMvcConfigurer {
      * @注册拦截器
      * @Params:
      * @Return:
-     *
     */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

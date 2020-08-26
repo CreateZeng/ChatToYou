@@ -1,15 +1,11 @@
-package com.zeng.config;
+package com.zeng.configuration;
 
 import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-
-import java.util.Collection;
-import java.util.HashMap;
 
 /**
  * @Author：Zeng-Jin
@@ -24,7 +20,6 @@ public class RedisTemplateConfig {
      * @自定义redisTemplate
      * @Params:
      * @Return:
-     *
     */
     @Bean("RedisObject")
     public RedisTemplate<String,Object> setRedisTemplate01(RedisConnectionFactory redisConnectionFactory){
