@@ -5,7 +5,7 @@ package com.zeng.controller;/*
  * Desc:
  */
 
-import com.zeng.entry.ReturnResult;
+import com.zeng.entry.vo.ReturnResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
