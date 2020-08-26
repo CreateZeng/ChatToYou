@@ -5,7 +5,7 @@ server:
 spring:
   application:
     name: GATE-WAY
-###eureka相关配置
+###Eureka相关配置
 eureka:
   client:
     fetch-registry: true

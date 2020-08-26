@@ -1,4 +1,4 @@
-package com.zeng.config;
+package com.zeng.propertyEntry;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -17,7 +17,7 @@ import java.util.List;
 @Component
 @PropertySource(value = "classpath:application.yml")
 @ConfigurationProperties(prefix = "filter")
-public class FilterProperties {
+public class WhitePathProperties {
 
     private List<String> whitePaths;
 }

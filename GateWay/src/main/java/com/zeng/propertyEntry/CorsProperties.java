@@ -1,4 +1,4 @@
-package com.zeng.config;
+package com.zeng.propertyEntry;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
