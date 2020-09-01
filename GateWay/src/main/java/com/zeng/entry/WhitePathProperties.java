@@ -15,7 +15,7 @@ import java.util.List;
  **/
 @Data
 @Component
-@PropertySource(value = "classpath:application.yml")
+@PropertySource(value = "classpath:bootstrap.yml")
 @ConfigurationProperties(prefix = "filter")
 public class WhitePathProperties {
 

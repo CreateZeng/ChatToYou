@@ -5,16 +5,18 @@ package com.zeng.entry.po;/*
  * Desc:
  */
 
-import java.util.Date;
-import java.util.List;
+import lombok.Data;
 
+import java.util.Date;
+@Data
 public class UserRelate {
+
+    private Integer id;
 
     private String username;
 
-    private List<User> friends;
+    private String friendName;
 
     private Date entrDate;
 
-    private Date updateDate;
 }

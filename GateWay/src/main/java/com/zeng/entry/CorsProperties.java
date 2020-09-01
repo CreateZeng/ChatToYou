@@ -14,7 +14,7 @@ import java.util.List;
  **/
 @Component
 @Data
-@PropertySource(value = "classpath:application.yml")
+@PropertySource(value = "classpath:bootstrap.yml")
 @ConfigurationProperties(prefix = "cors")
 public class CorsProperties {
     private List<String> allowedOrigins;

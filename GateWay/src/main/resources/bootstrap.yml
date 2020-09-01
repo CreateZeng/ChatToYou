@@ -1,48 +1,8 @@
-###服务端口号设置
-server:
-  port: 10002
-###服务名称设置
+######配置中心配置、文件为bootstrap.yml(加载顺序比application.yml更先)######
 spring:
-  application:
-    name: GATE-WAY
-###Eureka相关配置
-eureka:
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-          defaultZone: http://127.0.0.1:10001/eureka
-  instance:
-    ip-address: 127.0.0.1
-    prefer-ip-address: true
-    instance-id: ${eureka.instance.ip-address}:${server.port}
-###Zuul网关配置
-zuul:
-  prefix: /api
-  routes:
-    USER:
-      path: /user-service/**
-      serviceId: USER-SERVER
-    CHAT:
-      path: /chat-service/**
-      serviceId: CHAT-SERVER
-  host:
-    connect-timeout-millis: 15000
-    socket-timeout-millis: 60000
-  retryable: true
-###zuul默认会过滤cookie敏感信息头、需要添加该节点才能设置cookie
-  sensitive-headers:
-###Ribbon负载均衡
-ribbon:
-  MaxAutoRetries: 3
-  MaxAutoRetriesNextServer: 0
-  ReadTimeout: 10000
-  ConnectTimeout: 10000
-###Hystrix服务熔断
-hystrix:
-  command:
-    default:
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 20000
+  cloud:
+    config:
+      uri: http://127.0.0.1:10003    #配置中心地址
+      name: gate-way                 #配置文件名 （chat-server-dev.yml以-来区分环境命名：项目-环境.yml）
+      profile: dev                   #配置文件类型
+      label: master                  #分支

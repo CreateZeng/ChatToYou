@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  **/
 @Data
 @Component
-@PropertySource(value = "classpath:application.yml")
+@PropertySource(value = "classpath:bootstrap.yml")
 @ConfigurationProperties(prefix = "msg.sign")
 public class MsgProperties {
 
