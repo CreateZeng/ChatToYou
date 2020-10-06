@@ -1,5 +1,5 @@
 FROM openjdk:8-jdk-alpine
 VOLUME /tmp
-COPY /EurekaServer/src/main/docker/*.jar app.jar
+COPY *.jar app.jar
 RUN bash -c 'touch /app.jar'
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
