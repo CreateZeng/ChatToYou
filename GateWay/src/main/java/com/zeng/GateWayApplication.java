@@ -14,7 +14,7 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableZuulProxy    //开启网关服务
-public class GateWayApplication {
+public class    GateWayApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(GateWayApplication.class,args);

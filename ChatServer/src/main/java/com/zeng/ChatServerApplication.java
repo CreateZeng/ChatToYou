@@ -4,13 +4,14 @@ package com.zeng;/*
  * Date: 2020-08-16
  * Desc:
  */
-import com.zeng.websocket.WebSocketServer;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
-@EnableEurekaClient
+@EnableRabbit
 @SpringBootApplication
+@MapperScan(basePackages = "com.zeng.dao")
 public class ChatServerApplication {
     public static void main(String[] args) {
         SpringApplication aplication = new SpringApplication();

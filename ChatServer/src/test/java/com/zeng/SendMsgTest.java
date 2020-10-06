@@ -1,26 +1,29 @@
-package com.zeng;/*
- * Package: com.zeng
- * Author: Mr.Z.J---🐎
- * Date: 2020-08-16
- * Desc:
- */
+package com.zeng;
 
+import com.zeng.amqp.RabbitChatSender;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
+/**
+ * @Author：Zeng-Jin
+ * @Motto：不积跬步、无以至千里。
+ * @Date：2020-09-08
+ **/
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class MyTest {
+public class SendMsgTest {
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    RabbitChatSender rabbitChatSender;
 
     @Test
-    public void TestDemo(){
-
+    public void send(){
+        rabbitChatSender.send("hhahah");
     }
+
 }
