@@ -4,23 +4,23 @@ server:
 spring:
   application:
     name: CONFIG-CENTER
-####git配置中心的地址以及相关配置###############
-#  cloud:
-#    config:
-#      server:
-#        git:
-#          uri: https://github.com/CHZ-LOVE/ConfigCenter.git         #git地址
-#          search-paths: config-repo                                 #git根路径下配置文件所在目录
-#          username: CHZ-LOVE                                        #用户名
-#          password: zeng@1995                                       #密码
-#####本地配置文件###############
-  profiles:
-    active: native       #本地配置
+###git配置中心的地址以及相关配置###############
   cloud:
     config:
       server:
-        native:
-          search-locations: file:C:\Project\WebSocket\config      #本地配置文件路径
+        git:
+          uri: https://github.com/CHZ-LOVE/ConfigCenter.git         #git地址
+          search-paths: config-repo                                 #git根路径下配置文件所在目录
+          username: CHZ-LOVE                                        #用户名
+          password: zeng@1995                                       #密码
+######本地配置文件###############
+#  profiles:
+#    active: native       #本地配置
+#  cloud:
+#    config:
+#      server:
+#        native:
+#          search-locations: file:C:\Project\WebSocket\config      #本地配置文件路径
 ####不设置访问权限
 management:
   security:
