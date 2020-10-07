@@ -27,5 +27,10 @@ msg:
   sign:
     signName: 顾以夕沐
     templateCode: SMS_173345863
+<<<<<<< HEAD
     accessKeyId:
     accessKeySecret:
+=======
+    accessKeyId: 
+    accessKeySecret: 
+>>>>>>> origin/master
