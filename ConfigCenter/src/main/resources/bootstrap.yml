@@ -22,6 +22,7 @@ spring:
 #        native:
 #          search-locations: file:C:\Project\WebSocket\config      #本地配置文件路径
 ####不设置访问权限
+
 management:
   security:
     enabled: false
