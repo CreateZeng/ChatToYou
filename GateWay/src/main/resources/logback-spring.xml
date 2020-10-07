@@ -2,7 +2,7 @@
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
 
     <!--定义参数-->
-    <property name="springAppName" value="User-Server"/>
+    <property name="springAppName" value="gatewaylog"/>
 
     <!-- 控制台的日志输出样式 -->
     <property name="CONSOLE_LOG_PATTERN"
@@ -10,7 +10,7 @@
     <property name="FILE_LOG_PATTERN"
               value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5}:%line --- %msg%n"/>
     <!--文件输出位置-->  <!--/保存到系统目录   没有/保存到项目   （不带盘符）-->
-    <property name="LOG_PATH" value="logs/gatewaylog"/>
+    <property name="LOG_PATH" value="logs/gate-way"/>
 
     <!-- 控制台输出 -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">

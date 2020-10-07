@@ -1,8 +1,17 @@
-######配置中心配置、文件为bootstrap.yml(加载顺序比application.yml更先)######
+#######配置中心客户端git配置、文件为bootstrap.yml(加载顺序比application.yml更先)######
+#spring:
+#  cloud:
+#    config:
+#      uri: http://127.0.0.1:10003   #配置中心地址
+#      name: user-server             #配置文件名 （chat-server-dev.yml以-来区分环境命名：项目-环境.yml）
+#      profile: dev                  #配置文件类型
+#      label: master                 #分支
+
+######本地配置######
 spring:
   cloud:
     config:
       uri: http://127.0.0.1:10003   #配置中心地址
       name: user-server             #配置文件名 （chat-server-dev.yml以-来区分环境命名：项目-环境.yml）
-      profile: dev                  #配置文件类型
+      profile: test                  #本地测试配置文件
       label: master                 #分支

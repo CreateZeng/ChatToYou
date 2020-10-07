@@ -1,0 +1,70 @@
+###服务端口号设置
+server:
+  port: 10002
+###服务名称设置
+spring:
+  application:
+    name: GATE-WAY
+###Eureka相关配置
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+          defaultZone: http://127.0.0.1:10001/eureka
+  instance:
+    ip-address: 127.0.0.1
+    prefer-ip-address: true
+    instance-id: ${eureka.instance.ip-address}:${server.port}
+###Zuul网关配置
+zuul:
+  prefix: /api
+  routes:
+    USER:
+      path: /user-service/**
+      serviceId: USER-SERVER
+    CHAT:
+      path: /chat-service/**
+      serviceId: CHAT-SERVER
+  host:
+    connect-timeout-millis: 15000
+    socket-timeout-millis: 60000
+  retryable: true
+###zuul默认会过滤cookie敏感信息头、需要添加该节点才能设置cookie
+  sensitive-headers:
+###Ribbon负载均衡
+ribbon:
+  MaxAutoRetries: 3
+  MaxAutoRetriesNextServer: 0
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+###Hystrix服务熔断
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 20000
+ ###自定义配置、白名单
+filter:
+  whitePaths:
+    - /api/user-service
+###Cors跨域访问配置
+cors:
+  allowedOrigins:
+    - http://www.websocket.com
+    - http://api.websocket.com
+    - http://localhost:8080
+  allowedCredentials: true
+  allowedHeaders:
+    - "*"
+  allowedMethods:
+    - GET
+    - POST
+    - DELETE
+    - PUT
+    - OPTIONS
+    - HEAD
+  maxAge: 360000
+  filterPath: "/**"

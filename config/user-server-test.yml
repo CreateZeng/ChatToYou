@@ -1,4 +1,3 @@
-
 server:
   port: 9991
 spring:
@@ -27,10 +26,12 @@ msg:
   sign:
     signName: 顾以夕沐
     templateCode: SMS_173345863
-<<<<<<< HEAD
-    accessKeyId:
-    accessKeySecret:
-=======
-    accessKeyId: 
-    accessKeySecret: 
->>>>>>> origin/master
+    accessKeyId: LTAIwQUYtEYnhiGz
+    accessKeySecret: 9nD1IVuxjj6TEOzMyd9Sx1QVqNpn9T
+###自定义日志文件（配置文件名字自定义的、需要配置该路径）
+logging:
+  config: classpath:logback-spring.xml
+jwt:
+  info:
+    expire: 30
+    surplus: 10

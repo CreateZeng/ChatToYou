@@ -119,6 +119,12 @@ public class UserController {
         }
     }
 
+    /**
+     * @登录状态验证
+     * @Params:
+     * @Return:
+     *
+    */
     @GetMapping("user/verify")
     @ApiOperation(value = "用户身份验证",notes = "用户进行身份验证接口")
     public ResponseEntity<ReturnResult> userVerify(HttpServletRequest request,HttpServletResponse response){
@@ -127,11 +133,5 @@ public class UserController {
             return ResponseEntity.ok(ReturnResult.getSuccess(userDTO));
         }
         return ResponseEntity.ok(ReturnResult.getFail("认证失败"));
-    }
-
-    @GetMapping("user/login2")
-    public ResponseEntity<ReturnResult> userlogin2(){
-        System.out.println("请求成功");
-        return ResponseEntity.ok(ReturnResult.getSuccess("登录成功"));
     }
 }
