@@ -1,6 +1,7 @@
 #####忽略文件#####
 .idea
 *.iml
-/target/
+*/target/
+*/!target/*.jar
 /logs/
 /key/
