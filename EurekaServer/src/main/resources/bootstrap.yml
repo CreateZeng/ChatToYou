@@ -8,11 +8,11 @@ spring:
 ###eureka相关配置
 eureka:
   instance:
-    ip-address: 127.0.0.1
+    ip-address: 123.56.85.62
     prefer-ip-address: true
     instance-id: ${eureka.instance.ip-address}:${server.port}
   client:
     fetch-registry: false
     register-with-eureka: false
     service-url:
-      defaultZone: http://127.0.0.1:10001/eureka
+      defaultZone: http://123.56.85.62:10001/eureka
