@@ -22,7 +22,17 @@ spring:
 #        native:
 #          search-locations: file:C:\Project\WebSocket\config      #本地配置文件路径
 ####不设置访问权限
-
 management:
   security:
     enabled: false
+###Eureka相关配置
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://123.56.85.62:10001/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: ${eureka.instance.ip-address}:${server.port}
+    ip-address: 123.56.85.62
