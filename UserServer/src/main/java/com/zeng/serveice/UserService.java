@@ -17,7 +17,7 @@ public interface UserService {
 
     String userLoginByPhone(String phone,String code);
 
-    boolean userRegister(User user,String code);
+    boolean userRegister(User user);
 
     boolean sendVailCode(String phone);
 

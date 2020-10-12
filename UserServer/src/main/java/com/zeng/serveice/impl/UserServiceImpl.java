@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService{
      *
     */
     @Override
-    public boolean userRegister(User user,String validCode) {
+    public boolean userRegister(User user) {
         //判断用户名是否使用过
         logger.info("用户进行注册.......");
         User selectUser = userMapper.selectByUsername(user.getUsername());
@@ -125,7 +125,7 @@ public class UserServiceImpl implements UserService{
         }
         //短信验证手机号的正确性
         String code = redisTemplate.opsForValue().get("MsgCode:" + user.getPhone());
-        if (code!=null&&code.equals(validCode)){
+        if (code!=null&&code.equals(user.getCode())){
             logger.info("验证码校验成功.......");
             int count = userMapper.insertUser(user);
             logger.info("用户结束注册.......");

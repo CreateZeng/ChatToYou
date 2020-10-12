@@ -44,26 +44,21 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username",value = "用户名",required = false,dataType = "String")
     })//@ApiImplicitParams注解一组参数、@ApiImplicitParam注解一个参数
-    public ResponseEntity<ReturnResult> login(@RequestParam(value = "username",required = false)String username,
-                                @RequestParam(value = "password",required = false) String password,
-                                @RequestParam(value = "phone",required = false)String phone,
-                                @RequestParam(value = "code",required = false)String code,
-                                @RequestBody(required = false) LoginDto loginDto,
-                                HttpServletResponse response){
+    public ResponseEntity<ReturnResult> login(@RequestBody LoginDto loginDto,HttpServletResponse response){
         System.out.println("收到请求");
-        if (loginDto!=null){
-            username=loginDto.getUsername();
-            password=loginDto.getPassword();
-        }
         String token=null;
-        if (username!=null){
-            token = userService.userLoginByPassword(username,password);
-            if (token==null){
-                return ResponseEntity.ok(ReturnResult.getFail("登陆失败"));
-            }
-        }else if (phone!=null){
-            token = userService.userLoginByPhone(phone,code);
-            if (token==null){
+        if (loginDto!=null){
+            if (loginDto.getUsername()!=null){
+                token = userService.userLoginByPassword(loginDto.getUsername(),loginDto.getPassword());
+                if (token==null){
+                    return ResponseEntity.ok(ReturnResult.getFail("登陆失败"));
+                }
+            }else if (loginDto.getPhone()!=null){
+                token = userService.userLoginByPhone(loginDto.getPhone(),loginDto.getCode());
+                if (token==null){
+                    return ResponseEntity.ok(ReturnResult.getFail("登陆失败"));
+                }
+            }else {
                 return ResponseEntity.ok(ReturnResult.getFail("登陆失败"));
             }
         }else {
@@ -82,7 +77,7 @@ public class UserController {
     */
     @PostMapping("user/register")
     @ApiOperation(value = "用户注册",notes = "用户验证码登录")
-    public ResponseEntity<ReturnResult> register(@Valid User user,BindingResult result,@RequestParam(value = "code",required = true)String validCode){
+    public ResponseEntity<ReturnResult> register(@RequestBody @Valid User user,BindingResult result){
         //后端检验格式
         List<String> errorStr=new ArrayList<>();
         if (result.hasErrors()){
@@ -90,7 +85,7 @@ public class UserController {
                 errorStr.add(fieldError.getDefaultMessage());
             }
         }else if (user!=null){
-            boolean flag = userService.userRegister(user,validCode);
+            boolean flag = userService.userRegister(user);
             if (flag){
                 return ResponseEntity.ok(ReturnResult.getSuccess("注册成功"));
             }

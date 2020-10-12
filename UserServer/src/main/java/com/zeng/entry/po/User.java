@@ -21,5 +21,7 @@ public class User {
     private String password;
     @Pattern(regexp = RegexUtil.PHONE_REGEX, message = "手机号格式不正确")
     private String phone;
+    @Length(max = 6,min = 6,message = "验证码输入有误")
+    private String code;
 
 }
